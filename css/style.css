@@ -1291,6 +1291,9 @@ h1, h2, h3, h4, h5 {
 .fade-in-delay-3 { transition-delay: .3s; }
 .fade-in-delay-4 { transition-delay: .4s; }
 
+/* ── ===== SPINNER (form submit loading) ===== ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+
 /* ── ===== NOTIFICATION TOAST ===== ── */
 .toast {
   position: fixed;

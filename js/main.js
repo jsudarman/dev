@@ -1,5 +1,29 @@
 /* BrokerMFG – Main JavaScript */
 
+/* ═══════════════════════════════════════════════════════════
+   FORM CONFIGURATION
+   ───────────────────────────────────────────────────────────
+   Setup (one-time, ~2 minutes):
+   1. Go to https://formspree.io and sign in / create a free account
+   2. Create TWO forms (one for quotes, one for contact)
+   3. In each form's Settings → Notifications, add:
+        deankrotts@brokermfg.com
+        jsudarman@gmail.com
+   4. Replace the endpoint values below with your form URLs
+
+   To change notification recipients later:
+     → Log in to formspree.io → open the form → Settings → Notifications
+
+   To swap to a different form provider:
+     → Replace the endpoint URLs below; adjust submitForm() if the
+       new provider expects a different request format
+   ═══════════════════════════════════════════════════════════ */
+const CONFIG = {
+  quoteFormEndpoint:   'https://formspree.io/f/REPLACE_WITH_QUOTE_FORM_ID',
+  contactFormEndpoint: 'https://formspree.io/f/REPLACE_WITH_CONTACT_FORM_ID',
+};
+/* ═══════════════════════════════════════════════════════════ */
+
 /* ── Navbar scroll effect ── */
 const navbar = document.querySelector('.navbar');
 window.addEventListener('scroll', () => {
@@ -119,20 +143,49 @@ document.querySelectorAll('.file-upload').forEach(zone => {
   });
 });
 
-/* ── Quote form submission ── */
+/* ── Form submission helper ── */
+async function submitForm(form, endpoint, successMsg) {
+  const btn = form.querySelector('[type="submit"]');
+  const originalText = btn.innerHTML;
+
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Sending…';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' },
+    });
+
+    if (res.ok) {
+      showToast(successMsg);
+      form.reset();
+    } else {
+      const data = await res.json().catch(() => ({}));
+      const errMsg = data.errors?.map(e => e.message).join(', ') || 'Submission failed.';
+      showToast(`⚠ ${errMsg} Please call (414) 421-5900.`);
+    }
+  } catch {
+    showToast('⚠ Network error. Please call (414) 421-5900 or email info@brokermfg.com.');
+  }
+
+  btn.innerHTML = originalText;
+  btn.disabled = false;
+}
+
+/* ── Quote form ── */
 const quoteForm = document.getElementById('quoteForm');
 quoteForm?.addEventListener('submit', e => {
   e.preventDefault();
-  showToast('✓ Quote request submitted! We\'ll respond within 24 hours.');
-  quoteForm.reset();
+  submitForm(quoteForm, CONFIG.quoteFormEndpoint, '✓ Quote request sent! We\'ll respond within 24 hours.');
 });
 
 /* ── Contact form ── */
 const contactForm = document.getElementById('contactForm');
 contactForm?.addEventListener('submit', e => {
   e.preventDefault();
-  showToast('✓ Message sent! We\'ll be in touch shortly.');
-  contactForm.reset();
+  submitForm(contactForm, CONFIG.contactFormEndpoint, '✓ Message sent! We\'ll be in touch shortly.');
 });
 
 /* ── Newsletter ── */
