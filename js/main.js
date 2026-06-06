@@ -19,8 +19,8 @@
        new provider expects a different request format
    ═══════════════════════════════════════════════════════════ */
 const CONFIG = {
-  quoteFormEndpoint:   'https://formspree.io/f/REPLACE_WITH_QUOTE_FORM_ID',
-  contactFormEndpoint: 'https://formspree.io/f/REPLACE_WITH_CONTACT_FORM_ID',
+  quoteFormEndpoint:   'https://formspree.io/f/xnjyjbeq',
+  contactFormEndpoint: 'https://formspree.io/f/xjgdgabb',
 };
 /* ═══════════════════════════════════════════════════════════ */
 
