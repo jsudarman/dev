@@ -172,22 +172,12 @@ h1, h2, h3, h4, h5 {
   gap: 10px;
   color: var(--white);
 }
-.nav-logo-mark {
-  width: 44px; height: 44px;
-  background: var(--orange);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-head);
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: var(--white);
-  letter-spacing: -1px;
+.nav-logo-img {
+  height: 44px;
+  width: auto;
+  display: block;
   flex-shrink: 0;
 }
-.nav-logo-text strong { display: block; font-size: 1.1rem; line-height: 1.1; }
-.nav-logo-text span   { font-size: .68rem; letter-spacing: .08em; color: rgba(255,255,255,.55); text-transform: uppercase; }
 
 .nav-links {
   display: flex;
