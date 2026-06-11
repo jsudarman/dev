@@ -136,7 +136,12 @@ document.querySelectorAll('.file-upload').forEach(zone => {
     e.preventDefault();
     zone.style.borderColor = '';
     const files = e.dataTransfer.files;
-    if (files.length && label) label.textContent = `${files.length} file(s) selected: ${files[0].name}`;
+    if (files.length) {
+      const dt = new DataTransfer();
+      for (const file of files) dt.items.add(file);
+      input.files = dt.files;
+      if (label) label.textContent = `${files.length} file(s) selected: ${files[0].name}`;
+    }
   });
   input?.addEventListener('change', () => {
     if (input.files.length && label) label.textContent = `${input.files.length} file(s) selected: ${input.files[0].name}`;
